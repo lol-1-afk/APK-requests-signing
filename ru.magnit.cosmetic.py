@@ -1,6 +1,9 @@
 import hashlib
 import hmac
 
+# Signature: "X-Request-Sign" header
+# Method: HMAC SHA-512
+
 """
 Request screenshot from fiddler - https://i.ibb.co/JcPNQ7B/2023-06-20-225335050.png
 X-Device-ID header - device_uuid value
