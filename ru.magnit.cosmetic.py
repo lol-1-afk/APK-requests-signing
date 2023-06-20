@@ -38,7 +38,7 @@ Original encoding in APK, cotlin:
 """
 
 
-def encode(bytes_arrayr: bytes, string: str):
+def encode(bytes_arrayr: bytes, string: str) -> bytes:
     secret_key = bytes(bytes_arrayr)
     mac = hmac.new(secret_key, msg=bytes(string.lower().encode()), digestmod=hashlib.sha512)
     return mac.digest()
@@ -50,7 +50,8 @@ def SignRequest(
         version: str = "0.4.0",
         phone: str = "79101231231",
         platform: str = "Android"
-):
+                ) -> str:
+
     platform_salt_ps = encode(salt.encode(), platform)  # encode(salt.encode(), platform)
     ps_uuid_pu = encode(platform_salt_ps, device_uuid)  # encode(encode(salt.encode(), platform), device_uuid)
     pu_version_pv = encode(ps_uuid_pu, version)  # encode(encode(encode(salt.encode(), platform), device_uuid), version)
