@@ -12,36 +12,34 @@ X-Device-Platform header - plarform value
 
 Original encoding in APK, cotlin: 
 {
-            this.b.a();
-            String a3 = gk2.a(this.a.a, "DEVICE_UUID"); // device_uuid from shared prefs
-            if (a3 != null) {
-                str3 = a3;
-            }
-            byte[] bytes = "?wAyIaDzG1MjYxIE".getBytes(qx.a); // salt
-            ds2.g(bytes, "this as java.lang.String).getBytes(charset)");
-            byte[] e = l72.e(l72.e(l72.e(l72.e(bytes, "Android"), str3), "0.4.0"), str2);  // all that wee need
-            vu0 vu0 = vu0.a;
-            StringBuilder sb2 = new StringBuilder();
+    this.b.a();
+    String a3 = gk2.a(this.a.a, "DEVICE_UUID"); // device_uuid from shared prefs
+    if (a3 != null) {
+        str3 = a3;
+    }
+    byte[] bytes = "?wAyIaDzG1MjYxIE".getBytes(qx.a); // salt
+    ds2.g(bytes, "this as java.lang.String).getBytes(charset)");
+    byte[] e = l72.e(l72.e(l72.e(l72.e(bytes, "Android"), str3), "0.4.0"), str2);  // all that wee need
+    vu0 vu0 = vu0.a;
+    StringBuilder sb2 = new StringBuilder();
+    sb2.append((CharSequence) "");
+    int i2 = 0;
+    for (byte b : e) {  // now calculating hex
+        i2++;
+        if (i2 > 1) {
             sb2.append((CharSequence) "");
-            int i2 = 0;
-            for (byte b : e) {  // now calculating hex
-                i2++;
-                if (i2 > 1) {
-                    sb2.append((CharSequence) "");
-                }
-                sb2.append(vu0 != null ? (CharSequence) vu0.invoke(Byte.valueOf(b)) : String.valueOf((int) b));
-            }
-            sb2.append((CharSequence) "");
-            String sb3 = sb2.toString();
-            ds2.g(sb3, "joinTo(StringBuilder(), …ed, transform).toString()"); // joining to single string
-            aVar2.a("X-Request-Sign", sb3);  // set header
         }
-
-
+        sb2.append(vu0 != null ? (CharSequence) vu0.invoke(Byte.valueOf(b)) : String.valueOf((int) b));
+    }
+    sb2.append((CharSequence) "");
+    String sb3 = sb2.toString();
+    ds2.g(sb3, "joinTo(StringBuilder(), …ed, transform).toString()"); // joining to single string
+    aVar2.a("X-Request-Sign", sb3);  // set header
+}
 """
 
 
-def encode(bytes_arrayr: bytes, string: str) -> bytes:
+def encode(bytes_arrayr: bytes, string: str):
     secret_key = bytes(bytes_arrayr)
     mac = hmac.new(secret_key, msg=bytes(string.lower().encode()), digestmod=hashlib.sha512)
     return mac.digest()
@@ -53,8 +51,7 @@ def SignRequest(
         version: str = "0.4.0",
         phone: str = "79101231231",
         platform: str = "Android"
-                ) -> str:
-
+):
     platform_salt_ps = encode(salt.encode(), platform)  # encode(salt.encode(), platform)
     ps_uuid_pu = encode(platform_salt_ps, device_uuid)  # encode(encode(salt.encode(), platform), device_uuid)
     pu_version_pv = encode(ps_uuid_pu, version)  # encode(encode(encode(salt.encode(), platform), device_uuid), version)
