@@ -7,3 +7,4 @@
 - ru.oskelly.app - шифрование пароля при авторизации в аккаунте
 - su.ias.stolplit - подпись всех запросов
 - ru.litres.android - подпись всех запросов
+- ru.labirint.android - подпись всех запросов
