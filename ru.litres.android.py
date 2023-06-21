@@ -42,4 +42,4 @@ def SignRequest(is_school: bool = False):
 
 print("Sign:", SignRequest())
 # otput: 2a0ce5534c891061a75a2fe314ea0468983ed6cbe499f2c6b893de377c4770ff
-# # depends on date, always different
+# depends on date, always different
