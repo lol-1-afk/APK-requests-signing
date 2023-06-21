@@ -70,6 +70,5 @@ def SignRequest(path: str = "/s/api/v8/region/1/authorization/", salt: str = "EU
 
 
 print(SignRequest())
-print(SignRequest(path="/s/api/v8/getOrdersHistory/"))
 # output: {'md5': 'wq9ZJS7Ttf4IMn3h6NKifQ', 'expires': 1687353847}
 # depends on date and ip, always different
