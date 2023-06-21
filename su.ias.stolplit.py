@@ -27,7 +27,7 @@ Original encoding in APK, cotlin:
         instance.update(bytes);
         String encodeToString = Base64.encodeToString(instance.digest(), 16);  // encode hash bytes to base64
         Intrinsics.checkNotNullExpressionValue(encodeToString, "encodeToString(messageDigest, 16)");
-        this.settingsRepository.setHash(....);  // set value to shared prefs and replace by replacing dict
+        this.settingsRepository.setHash(....);  // set value to shared prefs
     } catch (NoSuchAlgorithmException e) {
         e.printStackTrace();
     } catch (Exception e2) {
@@ -63,8 +63,8 @@ def SignRequest(path: str = "/s/api/v8/region/1/authorization/", salt: str = "EU
     string = f"{timestamp}{path}{signing_ip} {salt}"
     hashed = hashlib.md5(string.encode()).digest()
     encoded = base64.b64encode(hashed).decode()
-    for key, valut in replacing.items():
-        hashed = hashed.replace(key, valut)
+    for key, value in replacing.items():
+        encoded = encoded.replace(key, value)
     data = {"md5": encoded, "expires": timestamp}
     return data
 
