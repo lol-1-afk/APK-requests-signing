@@ -4,7 +4,7 @@ import datetime
 import requests
 
 # Signature: "md5" and "expires" headers
-# Method: MD5
+# Method: Base64(MD5)
 
 """
 Request screenshot from fiddler - https://i.ibb.co/r2C3R7N/2023-06-21-131230168.png, https://i.ibb.co/cvFBBYc/image.png
@@ -27,7 +27,7 @@ Original encoding in APK, cotlin:
         instance.update(bytes);
         String encodeToString = Base64.encodeToString(instance.digest(), 16);  // encode hash bytes to base64
         Intrinsics.checkNotNullExpressionValue(encodeToString, "encodeToString(messageDigest, 16)");
-        this.settingsRepository.setHash(....);  // set value to shared prefs
+        this.settingsRepository.setHash(....);  // set value to shared prefs and replace by replacing dict
     } catch (NoSuchAlgorithmException e) {
         e.printStackTrace();
     } catch (Exception e2) {
@@ -50,18 +50,26 @@ def encode(string: str) -> bytes:
 
 
 def SignRequest(path: str = "/s/api/v8/region/1/authorization/", salt: str = "EUdq8qfSj1EB0QLntgY2"):
-    response = requests.get("https://www.stolplit.ru/get_ip/").json()
+    replacing = {
+        "=": "",
+        "+": "-",
+        "/": "_"
+    }
 
+    response = requests.get("https://www.stolplit.ru/get_ip/").json()
     timestamp = StringToDate(date_str=response["date_server"])
     signing_ip = response["ip"]
 
     string = f"{timestamp}{path}{signing_ip} {salt}"
     hashed = hashlib.md5(string.encode()).digest()
-    encoded = base64.b64encode(hashed).decode().replace("=", "").replace("+", "-")
+    encoded = base64.b64encode(hashed).decode()
+    for key, valut in replacing.items():
+        hashed = hashed.replace(key, valut)
     data = {"md5": encoded, "expires": timestamp}
     return data
 
 
-print("Sign:", SignRequest())
+print(SignRequest())
+print(SignRequest(path="/s/api/v8/getOrdersHistory/"))
 # output: {'md5': 'wq9ZJS7Ttf4IMn3h6NKifQ', 'expires': 1687353847}
 # depends on date and ip, always different
