@@ -8,3 +8,8 @@
 - su.ias.stolplit - подпись всех запросов
 - ru.litres.android - подпись всех запросов
 - ru.labirint.android - подпись всех запросов
+
+
+# TODO
+- com.platfomni.lot - подпись всех запросов на Ios/Android. ToUpperCase(SHA256(???)). Не могу найти место где генерируется заголовок "token"
+- com.chess - подпись всех запросов Ios/Android. ???. Не могу найти место где генерируется заголовок "sig"
