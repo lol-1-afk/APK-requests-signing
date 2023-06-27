@@ -9,6 +9,7 @@ Request data screenshot - https://i.ibb.co/t3DRkbJ/2023-06-27-153141956.png
 Not really hard, just boring to convert Java code to Python. Thanks ChatGPT and google.
 I spent ~2 hours doing it.
 BTW, i dont fully undersntand how salt generation works, but it is always different.
+https://onecompiler.com/java/3zcudc9ke
 
 Original encoding in APK, Java:
 private b(Integer num, char c10, char c11) {
