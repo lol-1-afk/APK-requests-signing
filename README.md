@@ -10,6 +10,7 @@
 - ru.labirint.android - подпись всех запросов
 - ru.briz.rendezvous - подпись при авторизации в аккаунте
 - com.platfomni.lot - подпись всех запросов
+- com.hushed.release - шифрование пароля в заголовке при авторизации. Интересный случай
 
 
 # TODO
