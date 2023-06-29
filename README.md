@@ -12,6 +12,7 @@
 - com.platfomni.lot - подпись всех запросов
 - com.hushed.release - шифрование пароля в заголовке при авторизации. Интересный случай
 - ru.hoff.app - подпись всех запросов
+- com.zadarma.sip - Zadarma, подпись всех запросов с sip
 
 
 # TODO
