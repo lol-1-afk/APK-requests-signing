@@ -21,3 +21,4 @@
 - com.platfomni.yaapteka - Тоже самое. Ошибка: Неверно указан токен: raw={\"latitude\":11,\"longitude\":11}, platform=2.
 - com.platfomni.maxavit - Тоже самое.
 - com.chess - подпись всех запросов Ios/Android. ???. Не могу найти место где генерируется заголовок "sig"
+- ru.mylavash - подпись при запросе смс. лютое шифрование, хз как переписать на питон. tech.itfood.crypto.Cryptogram, tech.itfood.crypto.CryptogramCipher
