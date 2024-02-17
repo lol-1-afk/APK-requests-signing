@@ -23,3 +23,4 @@
 - com.platfomni.maxavit - Тоже самое.
 - com.chess - подпись всех запросов Ios/Android. ???. Не могу найти место где генерируется заголовок "sig"
 - ru.mylavash - подпись при запросе смс. лютое шифрование, хз как переписать на питон. tech.itfood.crypto.Cryptogram, tech.itfood.crypto.CryptogramCipher
+- com.overwolf.statsroyale - "hash" в запросах. com.overwolf.statsroyale.Utils, com.overwolf.statsroyale.Client (m173s Mac mac = Mac..)
