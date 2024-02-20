@@ -24,3 +24,4 @@
 - com.chess - подпись всех запросов Ios/Android. ???. Не могу найти место где генерируется заголовок "sig"
 - ru.mylavash - подпись при запросе смс. лютое шифрование, хз как переписать на питон. tech.itfood.crypto.Cryptogram, tech.itfood.crypto.CryptogramCipher
 - com.overwolf.statsroyale - "hash" в запросах. com.overwolf.statsroyale.Utils, com.overwolf.statsroyale.Client (m173s Mac mac = Mac..)
+- ru.euroauto.EuroAuto - заголовок "X-Token" при авторизации. ru.euroauto.EuroAuto.businesslogic.api.ApiClient.authPhone https://logpaste.com/zyP3ca11
