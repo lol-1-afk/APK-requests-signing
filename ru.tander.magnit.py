@@ -6,57 +6,78 @@ import hmac
 
 """
 Request screenshot from fiddler - https://i.ibb.co/KD4n6ZD/Fiddler-l-Tmz-Csty-ZE.png
-Again no Jadx used, only frida. Best tool ever
-
-[*] MessageDigest.getInstance (1) called
-algorithm: MD5
-[*] MessageDigest.digest called
-algorithm: MD5
-input: {"aud":"loyalty-mobile","phone":"79956341405","captcha-token":"captcha-token","forceSMS":true}
-output: d66c73671b4d1a3b659b57d2010ee0ba
-[*] secretKeySpec.init called
-algorithm: HmacSHA512    
-keyH: 2e26d2f0588a7147be4a37573b65135eb2edf5ca747a10c02f1b864dad962921e661db2f7551d14e35cd513f785716a4ea4eb8494e41b27ab84d12b834d24bab
-[*] Mac.init called
-algorithm: HmacSHA512   
-keyH: 2e26d2f0588a7147be4a37573..
-[*] Mac.doFinal called
-algorithm: HmacSHA512
-input: d66c73671b4d1a3b659b57d2010ee0ba
-outputH: 63bc1ede4e60d0cb64e39d0b244a688ae669c9a2af877ed4d6e61b72ee93373feab52b979bb3b97b01ff333cbbfa86131183eed2f7fc15a34cf79434e86d3f5a
+Jadx + Frida. Log will be here soon
 """
 
 
-def encode_md5(string: str):
-    return hashlib.md5(string.encode()).hexdigest()
+import hashlib
+import hmac
+import json
 
 
-def encode_sha512(key: str, string: str):
-    secret_key_bytes = bytes.fromhex(key)
-    mac = hmac.new(secret_key_bytes, msg=string.encode(), digestmod=hashlib.sha512)
-    return mac.hexdigest()
+MASTER_KEY = "D3SVT7pbXn8bnA7T"
 
 
-def SignRequest(
-        aud: str = "loyalty-mobile",
-        phone: str = "79956341405",
-        captcha_token: str = "captcha-token",
-        force_sms: bool = True,
-        key_hex: str = "2e26d2f0588a7147be4a37573b65135eb2edf5ca747a10c02f1b864dad962921e661db2f7551d14e35cd513f785716a4ea4eb8494e41b27ab84d12b834d24bab"
-):
-    to_encode = {
-        "aud": aud,
-        "phone": phone,
-        "captcha-token": captcha_token,
-        "forceSMS": force_sms
-    }
+class MagnitSigner:
+    def __init__(self, device_platform: str, app_version: str, device_id: str, phone: str, token: str = ""):
+        self.__device_platform = device_platform
+        self.__app_version = app_version
+        self.__device_id = device_id
+        self.__phone = phone
+        self.__token = token
+        self.__hmac_key = self.generate_hmac_key()
 
-    to_encode = str(to_encode).replace("\'", "\"").replace(" ", "").replace("True", "true").replace("False", "false")
-    encoded_md5 = encode_md5(to_encode)
-    encoded_sha = encode_sha512(key=key_hex, string=encoded_md5)
-    print(encoded_sha)
+    def generate_hmac_key(self) -> bytes:
+        key = MASTER_KEY.encode()
+
+        for data in [self.__device_platform, self.__app_version, self.__device_id, self.__phone]:
+            key = hmac.new(key, data.lower().encode(), hashlib.sha512).digest()
+
+        return key
+
+    def update_token(self, token: str) -> None:
+        self.__token = token
+
+    def sign(self, path: str, payload: dict = None) -> str:
+        path_key = hmac.new(
+            key=self.__hmac_key,
+            msg=path.lower().encode(),
+            digestmod=hashlib.sha512
+        ).digest()
+
+        token_key = hmac.new(
+            key=path_key,
+            msg=self.__token.lower().encode(),  # token!
+            digestmod=hashlib.sha512
+        ).digest()
+
+        if not payload:  # GET request
+            return token_key.hex()
+
+        # POST / PATCH / PUT..
+        stringified_payload = json.dumps(payload, separators=(",", ":"))
+        hashed_payload = hashlib.md5(stringified_payload.encode()).hexdigest()
+
+        payload_key = hmac.new(
+            key=token_key,
+            msg=hashed_payload.encode(),
+            digestmod=hashlib.sha512
+        ).hexdigest()
+
+        return payload_key
 
 
-SignRequest()
-# output: 63bc1ede4e60d0cb64e39d0b244a688ae669c9a2af877ed4d6e61b72ee93373feab52b979bb3b97b01ff333cbbfa86131183eed2f7fc15a34cf79434e86d3f5a
-# it is the same sha512 hash as header 1 screenshot
+if __name__ == "__main__":
+    mc = MagnitSigner(
+        device_platform="android",
+        app_version="6.112.1",
+        device_id="b0ec3446-6f81-3be3-b29b-8a01b7b7e283",
+        phone="79698266375",
+    )
+
+    print(mc.sign(
+        path="/v1/auth/otp",
+        payload={"aud": "loyalty-mobile", "phone": "79698266375", "captcha-token": "captcha-token", "forceSMS": True}
+    ))
+
+
